@@ -1,8 +1,15 @@
-echo "Uninstalling lua..."
-echo "Are you sure you want to uninstall lua? (Yes/No)"
-read uninstall
+#!/bin/bash 
+echo "Uninstalling lua..."  
+while true; do
+  read -p "Are you sure?(Yes/No)" ANS
+  case $ANS in 
+    'Yes') 
+       sudo apt purge --autoremove -y lua > uninstall.log
+       break;;
+    'No') 
+       production=0  
+       break;;
+    *) 
+  esac
+done
 
-if $uninstall == 'Yes' then
-    sudo apt purge --autoremove -y lua > uninstall.log
-if $uninstall == 'No' then
-    exit
