@@ -4,5 +4,5 @@ read uninstall
 
 if $uninstall == 'Yes' then
     sudo apt purge --autoremove -y lua > uninstall.log
-else
+if $uninstall == 'No' then
     exit
