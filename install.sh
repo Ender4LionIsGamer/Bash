@@ -8,9 +8,9 @@ echo "What is your package manager? >> "
 read package
 
 echo "Step[1/5] Installing requirements..."
-sudo $package install build-essential tar -y > install.log
-touch install.log
-touch uninstall.log
+sudo $package install build-essential tar wget -y > /tmp/install.log
+sudo touch /tmp/install.log
+sudo touch /tmp/install.log
 echo -ne '#####                     (33%)\r'
 sleep 1
 echo -ne '#############             (66%)\r'
@@ -28,33 +28,46 @@ echo -ne '#######################   (100%)\r'
 echo -ne '\n'
 
 echo "Step [3/] Downloading lua..."
-cd ~/Downloads
-curl -o lua.tar.gz "http://www.lua.org/ftp/lua-${LUA_VERSION}.tar.gz" /tmp/ > install.log
+wget "http://www.lua.org/ftp/lua-${LUA_VERSION}.tar.gz"  > /tmp/install.log
+
+echo -ne '#####                     (33%)\r'
+sleep 1
+echo -ne '#############             (66%)\r'
+sleep 1
+echo -ne '#######################   (100%)\r'
+echo -ne '\n'
 
 echo "Step [4/5] Installing lua...."
-cd ~
-cd /tmp/
-mkdir lua-src > install.log
-tar xf lua.tar.gz --strip-components=1 -C lua-src > install.log
+cd ~/Downloads/
+sudo mkdir lua-src > ~/tmp/install.log
+sudo tar xf lua.tar.gz --strip-components=1 -C lua-src > /tmp/install.log
+mkdir lua-src
 cd lua-src
-make -j$(nproc) > install.log
-make install INSTALL_TOP=~/lua/usr/local > install.log
-cd ~
-mkdir lua/DEBIAN
+make -j$(nproc) > /tmp/install.log
+make install INSTALL_TOP=~/lua/usr/local > /tmp/install.log
+sudo mkdir lua/
+sudo mkdir lua/DEBIAN
 echo "Package: lua" >> lua/DEBIAN/control
 echo "Version: ${LUA_VERSION}-1" >> lua/DEBIAN/control
 echo "Architecture: amd64" >> lua/DEBIAN/control
 echo "Maintainer: $USER@$HOSTNAME" >> lua/DEBIAN/control
 echo "Description: Lua programming language" >> lua/DEBIAN/control
-dpkg-deb --build lua lua.deb > install.log
+sudo dpkg-deb --build lua lua.deb > /tmp/install.log
 	
-sudo apt install -y ./lua.deb > install.log
+sudo apt install -y ./lua.deb > /tmp/install.log
+
+echo -ne '#####                     (33%)\r'
+sleep 1
+echo -ne '#############             (66%)\r'
+sleep 1
+echo -ne '#######################   (100%)\r'
+echo -ne '\n'
 
 echo "Step [5/5] Packing up....."
-sudo rm -rf /tmp/lua.tar.gz
-sudo rm -rf /tmp/lua-src
-sudo rm -rf ~/lua
-sudo rm -rf ~/lua.deb
+sudo rm -rf ~/Downloads/lua.tar.gz
+sudo rm -rf ~/Downloads/lua-src
+sudo rm -rf ~/Downloads/lua
+sudo rm -rf ~/Downloads/lua.deb
 
 lua="lua -v"
 
