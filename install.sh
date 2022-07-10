@@ -1,6 +1,6 @@
 #!/bin/bash/
-echo "Please run this script as root!"
 clear
+echo "Please run this script as root!"
 echo "Welcome To Lua Installer..."
 echo "Starting...."
 
@@ -29,9 +29,11 @@ echo -ne '\n'
 
 echo "Step [3/] Downloading lua..."
 cd ~/Downloads
-curl -o lua.tar.gz "http://www.lua.org/ftp/lua-${LUA_VERSION}.tar.gz" > install.log
+curl -o lua.tar.gz "http://www.lua.org/ftp/lua-${LUA_VERSION}.tar.gz" /tmp/ > install.log
 
 echo "Step [4/5] Installing lua...."
+cd ~
+cd /tmp/
 mkdir lua-src > install.log
 tar xf lua.tar.gz --strip-components=1 -C lua-src > install.log
 cd lua-src
@@ -49,10 +51,10 @@ dpkg-deb --build lua lua.deb > install.log
 sudo apt install -y ./lua.deb > install.log
 
 echo "Step [5/5] Packing up....."
-rm -rf lua.tar.gz
-rm -rf lua-src
-rm -rf lua
-rm -rf lua.deb
+sudo rm -rf /tmp/lua.tar.gz
+sudo rm -rf /tmp/lua-src
+sudo rm -rf ~/lua
+sudo rm -rf ~/lua.deb
 
 lua="lua -v"
 
