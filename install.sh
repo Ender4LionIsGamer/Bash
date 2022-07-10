@@ -1,3 +1,6 @@
+#!/bin/bash/
+echo "Please run this script as root!"
+clear
 echo "Welcome To Lua Installer..."
 echo "Starting...."
 
